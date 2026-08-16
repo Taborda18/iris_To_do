@@ -2,7 +2,9 @@ import type { Request, Response } from 'express';
 import { env } from '../../../config/env.js';
 
 export const AUTH_COOKIE = 'iris_auth';
-const cookieOptions = `HttpOnly; Path=/; SameSite=Lax${env.NODE_ENV === 'production' ? '; Secure' : ''}`;
+const cookieOptions = env.NODE_ENV === 'production'
+  ? 'HttpOnly; Path=/; SameSite=None; Secure'
+  : 'HttpOnly; Path=/; SameSite=Lax';
 
 export const setAuthCookie = (response: Response, token: string): void => {
   response.setHeader('Set-Cookie', `${AUTH_COOKIE}=${encodeURIComponent(token)}; ${cookieOptions}`);
