@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.example.com/api',
+  apiUrl: 'https://iris-to-do.onrender.com/api',
 } as const;
