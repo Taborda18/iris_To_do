@@ -45,7 +45,9 @@ export const createApp = () => {
   app.use(express.json({ limit: '10kb' }));
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }));
   app.use((req, _res, next) => {
-    console.log(`[request] ${req.method} ${req.originalUrl}`);
+    if (req.path !== '/health') {
+      console.log(`[request] ${req.method} ${req.originalUrl}`);
+    }
     next();
   });
   app.get('/', (_req, res) => {
