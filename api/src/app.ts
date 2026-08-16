@@ -44,6 +44,13 @@ export const createApp = () => {
   app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
   app.use(express.json({ limit: '10kb' }));
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }));
+  app.use((req, _res, next) => {
+    console.log(`[request] ${req.method} ${req.originalUrl}`);
+    next();
+  });
+  app.get('/', (_req, res) => {
+    res.json({ name: 'Iris To-do API', status: 'ok' });
+  });
   app.get('/health', (_req, res) => res.json({ status: 'ok' }));
   app.get('/openapi.json', (_req, res) => res.json(openApiDocument));
   app.use('/docs', apiReference({ url: '/openapi.json' }));
@@ -59,8 +66,8 @@ export const createApp = () => {
   app.use('/api/auth', authRouter(authController, authenticate(tokens)));
   app.use('/api/tasks', authenticate(tokens), taskRouter(taskController));
   app.use((_req, _res, next) => next(new AppError(404, 'Route not found')));
-  app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-    console.error('Unhandled error:', error);
+  app.use((error: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error(`ERROR ${req.method} ${req.originalUrl}:`, error);
     const normalized = validationError(error);
     const appError = normalized instanceof AppError ? normalized : null;
     const status = appError?.statusCode ?? 500;
