@@ -12,7 +12,7 @@ import { AuthController } from './modules/auth/interfaces/controllers/auth.contr
 import { authRouter } from './modules/auth/interfaces/routes/auth.routes.js';
 import { authenticate } from './interfaces/http/middleware/authenticate.js';
 import { PrismaTaskRepository } from './modules/tasks/infrastructure/prisma-task-repository.js';
-import { CreateTask, DeleteTask, GetTask, ListTasks, UpdateTask } from './modules/tasks/application/tasks.js';
+import { CreateTask, DeleteTask, GetTask, ListTasks, RestoreTask, UpdateTask } from './modules/tasks/application/tasks.js';
 import { TaskController } from './modules/tasks/interfaces/controllers/task.controller.js';
 import { taskRouter } from './modules/tasks/interfaces/routes/task.routes.js';
 import { AppError } from './shared/errors.js';
@@ -63,6 +63,7 @@ export const createApp = () => {
     new GetTask(taskRepository),
     new UpdateTask(taskRepository),
     new DeleteTask(taskRepository),
+    new RestoreTask(taskRepository),
   );
   const authController = new AuthController(register, login, getCurrentUser);
   app.use('/api/auth', authRouter(authController, authenticate(tokens)));

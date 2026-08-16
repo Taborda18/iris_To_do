@@ -6,6 +6,9 @@ export interface TaskDto {
   readonly category: TaskCategory;
   readonly priority: TaskPriority;
   readonly completed: boolean;
+  readonly visible: boolean;
+  readonly dateLimit: string | null;
+  readonly deletedAt: string | null;
   readonly createdAt: string;
   readonly updatedAt: string;
 }
@@ -15,6 +18,7 @@ export interface CreateTaskRequestDto {
   readonly category: TaskCategory;
   readonly priority: TaskPriority;
   readonly completed?: boolean;
+  readonly dateLimit?: string | null;
 }
 
 export interface UpdateTaskRequestDto {
@@ -22,6 +26,7 @@ export interface UpdateTaskRequestDto {
   readonly category?: TaskCategory;
   readonly priority?: TaskPriority;
   readonly completed?: boolean;
+  readonly dateLimit?: string | null;
 }
 
 export interface TaskListResponseDto {

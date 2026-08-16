@@ -24,6 +24,16 @@ describe('RegisterPage', () => {
     expect(fixture.componentInstance.form.controls.confirmPassword.touched).toBe(true);
   });
 
+  it('rejects numbers and special characters in the full name', async () => {
+    const { fixture, auth } = setup();
+    fixture.componentInstance.form.setValue({ fullName: 'Ana-López', email: 'ana@example.com', password: 'password', confirmPassword: 'password' });
+
+    await fixture.componentInstance.submit();
+
+    expect(fixture.componentInstance.form.controls.fullName.hasError('pattern')).toBe(true);
+    expect(auth.register).not.toHaveBeenCalled();
+  });
+
   it('registers and navigates to tasks', async () => {
     const { fixture, auth, router } = setup();
     fixture.componentInstance.form.setValue({ fullName: 'Ada Lovelace', email: 'ada@example.com', password: 'password', confirmPassword: 'password' });

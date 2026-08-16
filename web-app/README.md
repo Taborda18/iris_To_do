@@ -8,10 +8,13 @@ Frontend de la prueba técnica de IRIS construido con Angular 22, componentes st
 - Creación de tareas mediante formulario y Enter.
 - Validación de títulos vacíos o compuestos solo por espacios.
 - Completar y descompletar tareas con estado de actualización individual.
-- Eliminación desde el panel de tareas existentes.
+- Edición de título, categoría, prioridad y fecha límite desde el menú de cada card.
+- Borrado lógico desde el menú de cada card.
+- Papelera en modal con restauración de tareas.
+- Fecha límite con PrimeNG DatePicker.
 - Filtros por estado y categoría.
 - Búsqueda por título.
-- Ordenamiento por prioridad o fecha.
+- Ordenamiento por fecha límite, prioridad o fecha de creación.
 - Métricas de total, completadas, pendientes y progreso.
 - Estados de carga, error y lista vacía.
 - Login, registro, restauración de sesión y logout.
@@ -35,7 +38,9 @@ src/app/
 │       ├── task-form/
 │       ├── task-list/
 │       ├── task-metrics/
-│       └── task-create-drawer/
+│       ├── task-create-drawer/
+│       ├── task-edit-dialog/
+│       └── task-trash-dialog/
 ├── services/
 │   ├── auth/                 # API auth, guard, interceptor y sesión
 │   └── task/                 # API, mapper y estado de tareas

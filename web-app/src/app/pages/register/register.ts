@@ -26,7 +26,7 @@ export class RegisterPage {
   readonly showPassword = signal(false);
   readonly showConfirmPassword = signal(false);
   readonly form: RegisterForm = new FormGroup({
-    fullName: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2)] }),
+    fullName: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^\p{L}+(?: +\p{L}+)*$/u)] }),
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
     confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),

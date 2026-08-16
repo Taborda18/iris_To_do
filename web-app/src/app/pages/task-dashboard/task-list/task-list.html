@@ -28,9 +28,15 @@
             <div [class]="'category-icon ' + task.category.toLowerCase()">
               <app-icon [name]="categoryIcons[task.category]" />
             </div>
-            <button class="task-menu" type="button" aria-label="Más opciones">
+            <button class="task-menu" type="button" aria-label="Más opciones" [attr.aria-expanded]="openMenuId() === task.id" (click)="toggleMenu($event, task.id)">
               <app-icon name="more" />
             </button>
+            @if (openMenuId() === task.id) {
+              <div class="task-menu-popover" role="menu">
+                <button type="button" role="menuitem" (click)="editTask($event, task.id)">Editar</button>
+                <button type="button" role="menuitem" class="danger" (click)="deleteTask($event, task.id)">Borrar</button>
+              </div>
+            }
           </div>
 
           <span class="category" [class]="'category ' + task.category.toLowerCase()">{{ task.category }}</span>
@@ -41,7 +47,17 @@
               <i [class]="'dot ' + task.priority.toLowerCase()"></i>
               {{ task.priority }}
             </span>
-            <time class="date" [attr.datetime]="task.createdAt">{{ task.createdAt }}</time>
+          </div>
+
+          <div class="task-dates">
+            <div class="date-row">
+              <span>Límite</span>
+              @if (task.dateLimit) { <time class="date" [attr.datetime]="task.dateLimit">{{ task.dateLimit }}</time> } @else { <span class="date">Sin fecha</span> }
+            </div>
+            <div class="date-row">
+              <span>Creación</span>
+              <time class="date" [attr.datetime]="task.createdAt">{{ task.createdAt }}</time>
+            </div>
           </div>
         </article>
       }

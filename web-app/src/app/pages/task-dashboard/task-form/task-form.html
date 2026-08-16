@@ -18,6 +18,10 @@
       <label class="form-label" for="task-priority">Prioridad</label>
       <p-select inputId="task-priority" [options]="priorities" formControlName="priority" aria-label="Prioridad de la tarea" appendTo="body" panelStyleClass="task-select-panel" styleClass="task-select" />
     </div>
+    <div class="form-field">
+      <label class="form-label" for="task-date-limit">Fecha límite</label>
+      <p-datepicker inputId="task-date-limit" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" placeholder="Selecciona una fecha" appendTo="body" styleClass="task-date-picker" />
+    </div>
   </div>
 
   <button class="form-submit" type="submit" [disabled]="form.invalid">＋ Crear tarea</button>

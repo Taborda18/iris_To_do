@@ -8,6 +8,9 @@ describe('mapTaskDto', () => {
       category: 'BackEnd' as const,
       priority: 'Urgente' as const,
       completed: false,
+      visible: true,
+      dateLimit: null,
+      deletedAt: null,
       createdAt: '2026-08-15',
       updatedAt: '2026-08-16',
     };

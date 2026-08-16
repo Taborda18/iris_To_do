@@ -8,4 +8,13 @@
 .progress-ring { width: 61px; height: 61px; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--mint) 0deg var(--progress), #dff3f0 var(--progress) 360deg); }
 .progress-ring span { width: 38px; height: 38px; border-radius: 50%; background: var(--surface); }
 @media (max-width: 900px) { :host { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { :host { grid-template-columns: 1fr; } }
+@media (max-width: 480px) {
+  :host { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .metric-card { min-height: 94px; padding: 12px; border-radius: 13px; }
+  .metric-label, .metric-card small { font-size: 10px; }
+  .metric-card strong { font-size: 22px; }
+  .metric-icon { width: 36px; height: 36px; }
+  .metric-icon app-icon { width: 18px; height: 18px; }
+  .progress-ring { width: 44px; height: 44px; }
+  .progress-ring span { width: 28px; height: 28px; }
+}

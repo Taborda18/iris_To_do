@@ -15,6 +15,11 @@ export class TaskApiService {
     return this.http.get<TaskListResponseDto>(this.endpoint, { params });
   }
 
+  getTrash(): Observable<TaskListResponseDto> {
+    const params = new HttpParams().set('page', 1).set('limit', 100).set('visible', false);
+    return this.http.get<TaskListResponseDto>(this.endpoint, { params });
+  }
+
   createTask(input: CreateTaskInput): Observable<{ readonly data: TaskDto }> {
     const request: CreateTaskRequestDto = input;
     return this.http.post<{ readonly data: TaskDto }>(this.endpoint, request);
@@ -26,5 +31,9 @@ export class TaskApiService {
 
   deleteTask(id: string): Observable<void> {
     return this.http.delete<void>(`${this.endpoint}/${id}`);
+  }
+
+  restoreTask(id: string): Observable<{ readonly data: TaskDto }> {
+    return this.http.post<{ readonly data: TaskDto }>(`${this.endpoint}/${id}/restore`, {});
   }
 }

@@ -8,6 +8,9 @@ export function mapTaskDto(dto: TaskDto): Task {
     category: dto.category,
     priority: dto.priority,
     completed: dto.completed,
+    visible: dto.visible,
+    dateLimit: dto.dateLimit,
+    deletedAt: dto.deletedAt,
     createdAt: dto.createdAt,
     updatedAt: dto.updatedAt,
   };

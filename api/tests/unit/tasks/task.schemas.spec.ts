@@ -13,12 +13,17 @@ describe('task schemas', () => {
   });
 
   it('parses pagination defaults and filters', () => {
-    expect(listTasksSchema.parse({ completed: 'true', page: '2', limit: '10' })).toEqual({ completed: 'true', page: 2, limit: 10 });
-    expect(listTasksSchema.parse({})).toEqual({ page: 1, limit: 20 });
+    expect(listTasksSchema.parse({ completed: 'true', visible: 'false', page: '2', limit: '10' })).toEqual({ completed: 'true', visible: 'false', page: 2, limit: 10 });
+    expect(listTasksSchema.parse({})).toEqual({ visible: 'true', page: 1, limit: 20 });
   });
 
   it('requires at least one update field', () => {
     expect(() => updateTaskSchema.parse({})).toThrow();
     expect(updateTaskSchema.parse({ completed: true })).toEqual({ completed: true });
+  });
+
+  it('validates optional task deadline', () => {
+    expect(createTaskSchema.parse({ title: 'Task', category: 'Docs', priority: 'Media', dateLimit: '2026-09-01' }).dateLimit).toBeInstanceOf(Date);
+    expect(updateTaskSchema.parse({ dateLimit: null })).toEqual({ dateLimit: null });
   });
 });

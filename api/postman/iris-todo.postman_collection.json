@@ -54,11 +54,16 @@
           "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks?completed=true&page=1&limit=20" }
         },
         {
+          "name": "List trash",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks?visible=false&page=1&limit=20" },
+          "description": "Returns logically deleted tasks that have not yet expired from the 14-day TTL window."
+        },
+        {
           "name": "Create task",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Review API documentation\",\n  \"category\": \"Docs\",\n  \"priority\": \"Media\"\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Review API documentation\",\n  \"category\": \"Docs\",\n  \"priority\": \"Media\",\n  \"dateLimit\": \"2026-08-19\"\n}" },
             "url": "{{baseUrl}}/api/tasks",
             "description": "Copy the returned data.id to the taskId variable before running the item requests below."
           }
@@ -72,13 +77,19 @@
           "request": {
             "method": "PATCH",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"completed\": true\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Review API documentation\",\n  \"priority\": \"Urgente\",\n  \"completed\": true,\n  \"dateLimit\": \"2026-08-20\"\n}" },
             "url": "{{baseUrl}}/api/tasks/{{taskId}}"
           }
         },
         {
           "name": "Delete task",
-          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/tasks/{{taskId}}" }
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/tasks/{{taskId}}" },
+          "description": "Moves the task to the trash by setting visible=false and deletedAt."
+        },
+        {
+          "name": "Restore task",
+          "request": { "method": "POST", "url": "{{baseUrl}}/api/tasks/{{taskId}}/restore" },
+          "description": "Restores a task from the trash and clears deletedAt."
         }
       ]
     }

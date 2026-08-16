@@ -14,6 +14,8 @@ const colombiaDate = (value: Date): string => {
 
 export const presentTask = (task: Task) => ({
   ...task,
+  dateLimit: task.dateLimit ? colombiaDate(task.dateLimit) : null,
+  deletedAt: task.deletedAt ? task.deletedAt.toISOString() : null,
   createdAt: colombiaDate(task.createdAt),
   updatedAt: colombiaDate(task.updatedAt),
 });

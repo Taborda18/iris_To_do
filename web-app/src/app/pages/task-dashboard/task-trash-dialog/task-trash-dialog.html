@@ -1,0 +1,32 @@
+@if (open()) {
+  <div class="trash-backdrop" role="presentation" (click)="close()"></div>
+  <section class="trash-modal" role="dialog" aria-modal="true" aria-labelledby="trash-title">
+    <header class="trash-header">
+      <div>
+        <span class="trash-kicker">Papelera</span>
+        <h2 id="trash-title">Tareas eliminadas</h2>
+        <p>Se eliminan definitivamente después de 14 días.</p>
+      </div>
+      <button type="button" class="trash-close" aria-label="Cerrar papelera" (click)="close()">×</button>
+    </header>
+
+    <div class="trash-content">
+      @if (tasks().length) {
+        @for (task of tasks(); track task.id) {
+          <article class="trash-task">
+            <div>
+              <strong>{{ task.title }}</strong>
+              <small>{{ task.category }} · {{ task.priority }} · Eliminada {{ task.deletedAt | date:'dd/MM/yyyy' }}</small>
+            </div>
+            <button type="button" class="restore-button" (click)="restore(task.id)">Restaurar</button>
+          </article>
+        }
+      } @else {
+        <div class="trash-empty">
+          <strong>La papelera está vacía</strong>
+          <p>Las tareas que elimines aparecerán aquí.</p>
+        </div>
+      }
+    </div>
+  </section>
+}

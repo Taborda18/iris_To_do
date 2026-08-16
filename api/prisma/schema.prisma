@@ -27,6 +27,9 @@ model Task {
   category   String   @default("FrontEnd")
   priority   String   @default("Media")
   completed  Boolean  @default(false)
+  visible    Boolean? @default(true)
+  dateLimit  DateTime?
+  deletedAt  DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

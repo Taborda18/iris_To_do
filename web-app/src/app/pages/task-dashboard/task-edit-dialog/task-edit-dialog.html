@@ -1,0 +1,42 @@
+@if (open()) {
+  <div class="edit-backdrop" role="presentation" (click)="close()"></div>
+  <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-task-title">
+    <header class="edit-header">
+      <div>
+        <span class="edit-kicker">Editar tarea</span>
+        <h2 id="edit-task-title">Actualizar tarea</h2>
+      </div>
+      <button type="button" class="edit-close" aria-label="Cerrar edición" (click)="close()">×</button>
+    </header>
+
+    <form class="edit-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="edit-field">
+        <label for="edit-task-name">Nombre de la tarea</label>
+        <input id="edit-task-name" formControlName="title" [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid" />
+        @if (form.controls.title.touched && form.controls.title.hasError('required')) { <small>El nombre es obligatorio.</small> }
+        @if (form.controls.title.touched && form.controls.title.hasError('maxlength')) { <small>Usa máximo 200 caracteres.</small> }
+      </div>
+
+      <div class="edit-options">
+        <div class="edit-field">
+          <label for="edit-task-category">Categoría</label>
+          <p-select inputId="edit-task-category" [options]="categories" formControlName="category" appendTo="body" styleClass="edit-select" />
+        </div>
+        <div class="edit-field">
+          <label for="edit-task-priority">Prioridad</label>
+          <p-select inputId="edit-task-priority" [options]="priorities" formControlName="priority" appendTo="body" styleClass="edit-select" />
+        </div>
+      </div>
+
+      <div class="edit-field">
+        <label for="edit-task-date">Fecha límite</label>
+        <p-datepicker inputId="edit-task-date" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" placeholder="Selecciona una fecha" appendTo="body" styleClass="edit-date-picker" />
+      </div>
+
+      <footer class="edit-actions">
+        <button type="button" class="cancel-button" (click)="close()">Cancelar</button>
+        <button type="submit" class="save-button">Guardar cambios</button>
+      </footer>
+    </form>
+  </section>
+}

@@ -22,11 +22,11 @@ describe('TaskFormComponent', () => {
     const component = fixture.componentInstance;
     const emitted: unknown[] = [];
     component.taskCreated.subscribe((value) => emitted.push(value));
-    component.form.setValue({ title: '  Build API  ', category: 'BackEnd', priority: 'Urgente' });
+    component.form.setValue({ title: '  Build API  ', category: 'BackEnd', priority: 'Urgente', dateLimit: null });
 
     component.submit();
 
-    expect(emitted).toEqual([{ title: 'Build API', category: 'BackEnd', priority: 'Urgente' }]);
-    expect(component.form.getRawValue()).toEqual({ title: '', category: 'FrontEnd', priority: 'Media' });
+    expect(emitted).toEqual([{ title: 'Build API', category: 'BackEnd', priority: 'Urgente', dateLimit: null }]);
+    expect(component.form.getRawValue()).toEqual({ title: '', category: 'FrontEnd', priority: 'Media', dateLimit: null });
   });
 });

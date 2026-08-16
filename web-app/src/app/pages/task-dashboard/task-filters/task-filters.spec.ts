@@ -23,6 +23,6 @@ describe('TaskFiltersComponent', () => {
 
     expect(component.statuses).toEqual(['Todos', 'Pendientes', 'Completadas']);
     expect(component.categories).toEqual(['All', 'FrontEnd', 'BackEnd', 'Docs']);
-    expect(component.sortOptions).toEqual(['Fecha de creación', 'Prioridad']);
+    expect(component.sortOptions).toEqual(['Fecha de creación', 'Fecha límite', 'Prioridad']);
   });
 });

@@ -14,6 +14,15 @@ pnpm dev
 
 Configura `DATABASE_URL`, `JWT_SECRET`, `JWT_EXPIRES_IN` y `CORS_ORIGIN` en `.env`. Nunca subas `.env` ni credenciales reales al repositorio.
 
+Después de actualizar `prisma/schema.prisma`, sincroniza el esquema con:
+
+```bash
+pnpm prisma:generate
+pnpm prisma:push
+```
+
+Al iniciar, la API crea el índice TTL `tasks_deletedAt_ttl` sobre `deletedAt`. Este índice elimina automáticamente las tareas que permanecen en papelera durante 14 días (`1209600` segundos). Puedes comprobarlo en MongoDB Atlas en `iris_todo > tasks > Indexes`.
+
 ## Autenticación
 
 El registro y login emiten la cookie `iris_auth` con los atributos `HttpOnly`, `SameSite=Lax` y `Secure` en producción. El frontend debe enviar las peticiones con credenciales (`withCredentials: true`).
@@ -29,17 +38,23 @@ POST /api/auth/logout
 
 ## Endpoints de tareas
 
-Todos requieren una cookie `iris_auth` válida. Las tareas contienen `title`, `category`, `priority`, `completed`, `createdAt` y `updatedAt`. Las categorías válidas son `FrontEnd`, `BackEnd` y `Docs`; las prioridades son `Baja`, `Media` y `Urgente`.
+Todos requieren una cookie `iris_auth` válida. Las tareas contienen `title`, `category`, `priority`, `completed`, `visible`, `dateLimit`, `deletedAt`, `createdAt` y `updatedAt`. Las categorías válidas son `FrontEnd`, `BackEnd` y `Docs`; las prioridades son `Baja`, `Media` y `Urgente`.
 
 ```text
 GET    /api/tasks?completed=true&page=1&limit=20
+GET    /api/tasks?visible=false&page=1&limit=20
 GET    /api/tasks/:id
 POST   /api/tasks
 PATCH  /api/tasks/:id
 DELETE /api/tasks/:id
+POST   /api/tasks/:id/restore
 ```
 
-`GET /api/tasks` soporta filtro por estado y paginación. Todas las operaciones aplican el `userId` autenticado, por lo que un usuario no puede leer, actualizar o eliminar tareas de otro.
+`GET /api/tasks` muestra tareas visibles por defecto y soporta filtros por estado, visibilidad y paginación. Usa `visible=false` para consultar la papelera.
+
+`DELETE /api/tasks/:id` realiza un borrado lógico: establece `visible=false` y guarda la fecha actual en `deletedAt`. `POST /api/tasks/:id/restore` restaura la tarea estableciendo `visible=true` y `deletedAt=null`. Si permanece en papelera durante 14 días, el índice TTL de MongoDB la elimina definitivamente.
+
+`dateLimit` es opcional y debe enviarse como fecha en formato `YYYY-MM-DD`, por ejemplo `2026-08-19`. Todas las operaciones aplican el `userId` autenticado, por lo que un usuario no puede leer, actualizar, restaurar o eliminar tareas de otro.
 
 ## Documentación de API
 
@@ -99,6 +114,7 @@ Las reglas de negocio no dependen de Express, Prisma ni MongoDB. `app.ts` actúa
 - Validación estricta de body y query con Zod.
 - Errores centralizados con formato `{ error: { code, message, details } }`.
 - Índices MongoDB para `userId`, `completed`, `createdAt` y combinaciones de consulta.
+- Índice TTL `tasks_deletedAt_ttl` para eliminar tareas de papelera después de 14 días.
 - Paginación para limitar el tamaño de las respuestas.
 - API stateless: cualquier instancia puede validar la sesión con el mismo secreto.
 

@@ -19,9 +19,9 @@ export class TaskFiltersComponent {
   readonly category = signal<TaskCategory | 'All'>('All');
   readonly status = signal<TaskStatus>('Todos');
   readonly search = signal('');
-  readonly sort = signal<TaskSort>('Fecha de creación');
+  readonly sort = signal<TaskSort>('Fecha límite');
   readonly statuses: TaskStatus[] = ['Todos', 'Pendientes', 'Completadas'];
-  readonly sortOptions: TaskSort[] = ['Fecha de creación', 'Prioridad'];
+  readonly sortOptions: TaskSort[] = ['Fecha de creación', 'Fecha límite', 'Prioridad'];
 
   emit(): void { this.filtersChanged.emit({ category: this.category(), status: this.status(), search: this.search(), sort: this.sort() }); }
 }

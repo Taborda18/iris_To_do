@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { TaskApiService } from './task-api.service';
 import { mapTaskDto } from './task.mapper';
 import { CreateTaskInput, Task } from '../../models/task/task.model';
+import type { UpdateTaskRequestDto } from '../../models/task/task.dto';
 import { AlertService } from '../../shared/services/alert.service';
 
 @Injectable({ providedIn: 'root' })
@@ -11,16 +12,25 @@ export class TaskService {
   private readonly taskApi = inject(TaskApiService);
   private readonly alertService = inject(AlertService);
   private readonly tasksState = signal<readonly Task[]>([]);
+  private readonly trashState = signal<readonly Task[]>([]);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
   readonly togglingTaskIds = signal<ReadonlySet<string>>(new Set());
   readonly tasks = this.tasksState.asReadonly();
+  readonly trash = this.trashState.asReadonly();
 
   async loadTasks(): Promise<void> {
     await this.run(async () => {
       const response = await firstValueFrom(this.taskApi.getTasks());
       this.tasksState.set(response.data.map(mapTaskDto));
     }, true);
+  }
+
+  async loadTrash(): Promise<void> {
+    await this.run(async () => {
+      const response = await firstValueFrom(this.taskApi.getTrash());
+      this.trashState.set(response.data.map(mapTaskDto));
+    });
   }
 
   async addTask(input: CreateTaskInput): Promise<void> {
@@ -32,6 +42,15 @@ export class TaskService {
       this.tasksState.update((tasks) => [...tasks, mapTaskDto(response.data)]);
     });
     if (succeeded) this.alertService.success('La tarea fue creada correctamente.', 'Tarea creada');
+  }
+
+  async restoreTask(id: string): Promise<void> {
+    const succeeded = await this.run(async () => {
+      const response = await firstValueFrom(this.taskApi.restoreTask(id));
+      this.trashState.update((tasks) => tasks.filter((task) => task.id !== id));
+      this.tasksState.update((tasks) => [...tasks, mapTaskDto(response.data)]);
+    });
+    if (succeeded) this.alertService.success('La tarea fue restaurada correctamente.', 'Tarea restaurada');
   }
 
   async toggleTask(id: string): Promise<void> {
@@ -48,6 +67,15 @@ export class TaskService {
     } finally {
       this.setToggling(id, false);
     }
+  }
+
+  async updateTask(id: string, input: UpdateTaskRequestDto): Promise<boolean> {
+    const succeeded = await this.run(async () => {
+      const response = await firstValueFrom(this.taskApi.updateTask(id, input));
+      this.tasksState.update((tasks) => tasks.map((task) => task.id === id ? mapTaskDto(response.data) : task));
+    });
+    if (succeeded) this.alertService.success('La tarea fue actualizada correctamente.', 'Tarea actualizada');
+    return succeeded;
   }
 
   async deleteTask(id: string): Promise<void> {

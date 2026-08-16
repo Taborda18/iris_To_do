@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CreateTask, DeleteTask, GetTask, ListTasks, UpdateTask } from '../../../src/modules/tasks/application/tasks.js';
+import { CreateTask, DeleteTask, GetTask, ListTasks, RestoreTask, UpdateTask } from '../../../src/modules/tasks/application/tasks.js';
 import { makeTask, makeTaskRepository } from '../../helpers/task-fakes.js';
 
 describe('tasks application', () => {

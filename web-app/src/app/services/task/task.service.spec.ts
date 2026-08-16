@@ -11,6 +11,9 @@ const task = {
   category: 'BackEnd' as const,
   priority: 'Urgente' as const,
   completed: false,
+  visible: true,
+  dateLimit: null,
+  deletedAt: null,
   createdAt: '2026-08-15T10:00:00.000Z',
   updatedAt: '2026-08-15T10:00:00.000Z',
 };
@@ -62,6 +65,20 @@ describe('TaskService', () => {
     http.expectOne({ method: 'DELETE', url: 'http://localhost:3000/api/tasks/task-1' }).flush(null, { status: 204, statusText: 'No Content' });
     await remove;
     expect(service.tasks()).toEqual([]);
+  });
+
+  it('loads the trash and restores a task', async () => {
+    const trashTask = { ...task, visible: false, deletedAt: '2026-08-16T10:00:00.000Z' };
+    const loadTrash = service.loadTrash();
+    http.expectOne({ method: 'GET', url: 'http://localhost:3000/api/tasks?page=1&limit=100&visible=false' }).flush({ data: [trashTask] });
+    await loadTrash;
+    expect(service.trash()).toEqual([trashTask]);
+
+    const restore = service.restoreTask(task.id);
+    http.expectOne({ method: 'POST', url: 'http://localhost:3000/api/tasks/task-1/restore' }).flush({ data: task });
+    await restore;
+    expect(service.trash()).toEqual([]);
+    expect(service.tasks()).toContainEqual(task);
   });
 
   it('does not create empty task titles', async () => {

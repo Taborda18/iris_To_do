@@ -29,7 +29,10 @@
         <div><h1>Lista de tareas</h1><p>Organiza, prioriza y haz que las cosas se hagan.</p></div>
         <div class="header-actions">
           <div class="search-box"><label class="sr-only" for="search-tasks">Buscar tareas</label><app-icon name="search" /><input id="search-tasks" placeholder="Buscar tareas..." [value]="filters().search" (input)="updateFilters({ ...filters(), search: $any($event.target).value })" /><kbd></kbd></div>
-          <button class="add-task-button" type="button" (click)="isFormOpen.update((open) => !open)"><span></span> Crear tarea</button>
+          <div class="header-buttons">
+            <button class="trash-button" type="button" (click)="openTrash()"><i class="pi pi-trash" aria-hidden="true"></i> Papelera</button>
+            <button class="add-task-button" type="button" (click)="isFormOpen.update((open) => !open)"><span></span> Crear tarea</button>
+          </div>
         </div>
       </header>
 
@@ -63,7 +66,7 @@
         <app-task-metrics [total]="tasks().length" [completed]="completed()" [pending]="pending()" [progress]="progress()" />
         <app-task-filters (filtersChanged)="updateFilters($event)" />
         <div class="workspace">
-          <app-task-list [tasks]="filteredTasks()" [togglingTaskIds]="togglingTaskIds()" (taskToggled)="toggleTask($event)" />
+          <app-task-list [tasks]="filteredTasks()" [togglingTaskIds]="togglingTaskIds()" (taskToggled)="toggleTask($event)" (taskEdited)="editTask($event)" (taskDeleted)="deleteTask($event)" />
           <aside class="right-column">
             <section class="side-card">
               <h2><app-icon name="target" /> Enfoque de hoy</h2>
@@ -91,6 +94,8 @@
     (taskCreated)="addTask($event)"
     (taskDeleted)="deleteTask($event)"
   />
+  <app-task-trash-dialog [open]="isTrashOpen()" [tasks]="taskService.trash()" (closed)="isTrashOpen.set(false)" (restored)="restoreTask($event)" />
+  <app-task-edit-dialog [open]="editingTask() !== null" [task]="editingTask()" (closed)="closeEdit()" (saved)="saveEdit($event)" />
 
   <nav class="mobile-bottom-nav" aria-label="Navegación móvil">
     <a class="active" href="/tasks"><app-icon name="grid" /><span>Panel</span></a>

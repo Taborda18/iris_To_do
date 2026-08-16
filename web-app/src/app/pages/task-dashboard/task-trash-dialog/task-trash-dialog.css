@@ -1,0 +1,15 @@
+.trash-backdrop { position: fixed; inset: 0; z-index: 40; background: rgba(17, 48, 52, .42); backdrop-filter: blur(3px); }
+.trash-modal { position: fixed; top: 50%; left: 50%; z-index: 41; display: grid; width: min(620px, calc(100vw - 32px)); max-height: min(680px, calc(100dvh - 32px)); transform: translate(-50%, -50%); overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); box-shadow: 0 24px 70px rgba(18, 55, 60, .24); }
+.trash-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 24px; border-bottom: 1px solid var(--border); }
+.trash-kicker { color: var(--mint-dark); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.trash-header h2 { margin: 5px 0 4px; color: var(--ink); font-size: 23px; }
+.trash-header p, .trash-task small, .trash-empty p { margin: 0; color: var(--muted); font-size: 12px; }
+.trash-close { width: 32px; height: 32px; border: 0; border-radius: 8px; background: #f1f6f5; color: var(--ink-soft); font-size: 22px; cursor: pointer; }
+.trash-content { display: grid; gap: 10px; overflow-y: auto; padding: 18px 24px 24px; }
+.trash-task { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; }
+.trash-task div { display: grid; min-width: 0; gap: 5px; }
+.trash-task strong { overflow: hidden; color: var(--ink); text-overflow: ellipsis; white-space: nowrap; }
+.restore-button { flex: 0 0 auto; padding: 8px 12px; border: 0; border-radius: 8px; background: #dff6f1; color: var(--mint-dark); font-size: 12px; font-weight: 700; cursor: pointer; }
+.trash-empty { padding: 42px 12px; text-align: center; }
+.trash-empty strong { color: var(--ink); }
+@media (max-width: 520px) { .trash-header, .trash-content { padding-right: 18px; padding-left: 18px; }.trash-task { align-items: flex-start; flex-direction: column; }.restore-button { width: 100%; } }
