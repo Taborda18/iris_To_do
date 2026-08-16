@@ -81,6 +81,27 @@ describe('TaskService', () => {
     expect(service.tasks()).toContainEqual(task);
   });
 
+  it('updates a task and replaces it in local state', async () => {
+    const create = service.addTask({ title: task.title, category: task.category, priority: task.priority });
+    http.expectOne({ method: 'POST', url: 'http://localhost:3000/api/tasks' }).flush({ data: task });
+    await create;
+
+    const update = service.updateTask(task.id, { title: 'Updated API', dateLimit: '2026-08-20' });
+    http.expectOne({ method: 'PATCH', url: 'http://localhost:3000/api/tasks/task-1' }).flush({ data: { ...task, title: 'Updated API', dateLimit: '2026-08-20' } });
+
+    await expect(update).resolves.toBe(true);
+    expect(service.tasks()[0].title).toBe('Updated API');
+    expect(alerts.success).toHaveBeenCalledWith('La tarea fue actualizada correctamente.', 'Tarea actualizada');
+  });
+
+  it('keeps the update result false when editing fails', async () => {
+    const update = service.updateTask(task.id, { title: 'Updated API' });
+    http.expectOne({ method: 'PATCH', url: 'http://localhost:3000/api/tasks/task-1' }).flush({}, { status: 500, statusText: 'Server Error' });
+
+    await expect(update).resolves.toBe(false);
+    expect(alerts.error).toHaveBeenCalled();
+  });
+
   it('does not create empty task titles', async () => {
     await service.addTask({ title: '   ', category: 'Docs', priority: 'Baja' });
     expect(service.tasks()).toEqual([]);

@@ -52,4 +52,14 @@ describe('tasks application', () => {
   it('returns not found when deleting another user task', async () => {
     await expect(new DeleteTask(makeTaskRepository()).execute('user-1', 'task-1')).rejects.toMatchObject({ statusCode: 404 });
   });
+
+  it('restores a task from the trash', async () => {
+    const restore = vi.fn(async () => makeTask({ visible: true, deletedAt: null }));
+    await expect(new RestoreTask(makeTaskRepository({ restore })).execute('user-1', 'task-1')).resolves.toMatchObject({ visible: true, deletedAt: null });
+    expect(restore).toHaveBeenCalledWith('user-1', 'task-1');
+  });
+
+  it('returns not found when restoring a task outside the trash', async () => {
+    await expect(new RestoreTask(makeTaskRepository()).execute('user-1', 'task-1')).rejects.toMatchObject({ statusCode: 404 });
+  });
 });

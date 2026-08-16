@@ -72,4 +72,38 @@ describe('TaskListComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Create API');
     expect(fixture.nativeElement.querySelector('article')).not.toBeNull();
   });
+
+  it('opens the card menu and emits edit or delete actions', () => {
+    const component = createComponent().componentInstance;
+    const edited = vi.fn();
+    const deleted = vi.fn();
+    component.taskEdited.subscribe(edited);
+    component.taskDeleted.subscribe(deleted);
+    const event = { stopPropagation: vi.fn() } as unknown as MouseEvent;
+
+    component.toggleMenu(event, task.id);
+    expect(component.openMenuId()).toBe(task.id);
+    component.editTask(event, task.id);
+    expect(edited).toHaveBeenCalledWith(task.id);
+    expect(component.openMenuId()).toBeNull();
+
+    component.toggleMenu(event, task.id);
+    component.deleteTask(event, task.id);
+    expect(deleted).toHaveBeenCalledWith(task.id);
+    expect(event.stopPropagation).toHaveBeenCalled();
+  });
+
+  it('renders menu actions when the three-dot button is opened', () => {
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('tasks', [task]);
+    fixture.detectChanges();
+
+    const menuButton = fixture.nativeElement.querySelector('.task-menu') as HTMLButtonElement;
+    menuButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.task-menu-popover').textContent).toContain('Editar');
+    expect(fixture.nativeElement.querySelector('.task-menu-popover').textContent).toContain('Borrar');
+  });
 });
