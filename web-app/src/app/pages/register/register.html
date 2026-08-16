@@ -19,7 +19,7 @@
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <div class="field-group" [class.invalid]="form.controls.fullName.touched && form.controls.fullName.invalid">
           <label for="register-full-name">Nombre completo</label>
-          <input id="register-full-name" type="text" formControlName="fullName" autocomplete="name" minlength="2" maxlength="100" pattern="[\p{L}]+(?: +[\p{L}]+)*" placeholder="Escribe tu nombre completo" [attr.aria-invalid]="form.controls.fullName.touched && form.controls.fullName.invalid" />
+          <input id="register-full-name" type="text" formControlName="fullName" autocomplete="name" minlength="2" maxlength="100" placeholder="Escribe tu nombre completo" [attr.aria-invalid]="form.controls.fullName.touched && form.controls.fullName.invalid" />
           @if (form.controls.fullName.touched && form.controls.fullName.hasError('required')) { <small class="field-error">El nombre completo es obligatorio.</small> }
           @if (form.controls.fullName.touched && form.controls.fullName.hasError('minlength')) { <small class="field-error">Usa al menos 2 caracteres.</small> }
           @if (form.controls.fullName.touched && form.controls.fullName.hasError('maxlength')) { <small class="field-error">Usa máximo 100 caracteres.</small> }

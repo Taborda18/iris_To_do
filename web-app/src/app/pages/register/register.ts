@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import type { RegisterCredentials } from '../../models/auth/auth.model';
@@ -10,6 +10,18 @@ type RegisterForm = FormGroup<{
   password: FormControl<string>;
   confirmPassword: FormControl<string>;
 }>;
+
+const normalizeFullName = (value: string): string => value
+  .normalize('NFC')
+  .replace(/[\u200B-\u200D\uFEFF]/gu, '')
+  .replace(/\s+/gu, ' ')
+  .trim();
+
+const fullNameValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  if (!control.value) return null;
+  const value = normalizeFullName(String(control.value));
+  return /^\p{L}+(?: +\p{L}+)*$/u.test(value) ? null : { pattern: true };
+};
 
 @Component({
   selector: 'app-register',
@@ -26,7 +38,7 @@ export class RegisterPage {
   readonly showPassword = signal(false);
   readonly showConfirmPassword = signal(false);
   readonly form: RegisterForm = new FormGroup({
-    fullName: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^\p{L}+(?: +\p{L}+)*$/u)] }),
+    fullName: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100), fullNameValidator] }),
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
     confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -40,7 +52,7 @@ export class RegisterPage {
     if (this.form.invalid || this.form.controls.password.value !== this.form.controls.confirmPassword.value) return;
 
     const { fullName, email, password } = this.form.getRawValue();
-    const credentials: RegisterCredentials = { fullName, email, password };
+    const credentials: RegisterCredentials = { fullName: normalizeFullName(fullName), email, password };
     const registered = await this.authService.register(credentials);
     if (registered) await this.router.navigateByUrl('/tasks');
   }

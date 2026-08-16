@@ -34,6 +34,15 @@ describe('RegisterPage', () => {
     expect(auth.register).not.toHaveBeenCalled();
   });
 
+  it('accepts copied names with special spaces and normalizes them before registering', async () => {
+    const { fixture, auth } = setup();
+    fixture.componentInstance.form.setValue({ fullName: ' Robin\u00A0Taborda ', email: 'robin@example.com', password: 'password', confirmPassword: 'password' });
+
+    await fixture.componentInstance.submit();
+
+    expect(auth.register).toHaveBeenCalledWith({ fullName: 'Robin Taborda', email: 'robin@example.com', password: 'password' });
+  });
+
   it('registers and navigates to tasks', async () => {
     const { fixture, auth, router } = setup();
     fixture.componentInstance.form.setValue({ fullName: 'Ada Lovelace', email: 'ada@example.com', password: 'password', confirmPassword: 'password' });
