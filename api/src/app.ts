@@ -60,6 +60,7 @@ export const createApp = () => {
   app.use('/api/tasks', authenticate(tokens), taskRouter(taskController));
   app.use((_req, _res, next) => next(new AppError(404, 'Route not found')));
   app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error('Unhandled error:', error);
     const normalized = validationError(error);
     const appError = normalized instanceof AppError ? normalized : null;
     const status = appError?.statusCode ?? 500;
