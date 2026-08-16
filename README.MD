@@ -1,6 +1,6 @@
 # Iris To Do App
 
-Este repositorio contiene la solución desarrollada para la prueba técnica de **IRIS** para el cargo de **Development.**
+Este repositorio contiene la solución desarrollada para la prueba técnica de **IRIS** para el cargo de **Development Full-Stack.**
 
 El proyecto consiste en una aplicación Full Stack para la gestión de tareas, compuesta por una API REST y una aplicación web.
 
