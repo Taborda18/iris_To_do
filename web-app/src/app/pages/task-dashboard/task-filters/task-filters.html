@@ -1,11 +1,13 @@
-<div class="mb-[17px] flex items-center gap-3 max-[700px]:flex-wrap max-[700px]:items-stretch">
-  <label class="sr-only" for="task-status">Estado</label>
-  <p-select [options]="statuses" [ngModel]="status()" (ngModelChange)="status.set($event); emit()" aria-label="Estado de la tarea" class="filter-status w-[145px] shrink-0" />
+<div class="task-filters mb-[17px] flex items-center gap-3 max-[700px]:flex-wrap max-[700px]:items-stretch">
+  <div class="filter-row">
+    <label class="sr-only" for="task-status">Estado</label>
+    <p-select [options]="statuses" [ngModel]="status()" (ngModelChange)="status.set($event); emit()" aria-label="Estado de la tarea" class="filter-status w-[145px] shrink-0" />
+    <label class="sr-only" for="task-sort">Ordenar tareas</label>
+    <p-select [options]="sortOptions" [ngModel]="sort()" (ngModelChange)="sort.set($event); emit()" aria-label="Ordenar tareas" class="filter-sort w-[145px] shrink-0" />
+  </div>
   <div class="filter-tabs flex flex-1 overflow-x-auto rounded-[11px] border border-slate-200 bg-white px-1.5" role="tablist" aria-label="Categorías de tareas">
     @for (item of categories; track item) {
       <button class="border-0 border-b-2 border-transparent bg-transparent px-3.5 py-3 text-sm text-slate-500 transition hover:text-teal-600" [class.border-teal-400]="category() === item" [class.font-semibold]="category() === item" [class.text-teal-600]="category() === item" type="button" role="tab" [attr.aria-selected]="category() === item" (click)="category.set(item); emit()">{{ item }}</button>
     }
   </div>
-  <label class="sr-only" for="task-sort">Ordenar tareas</label>
-  <p-select [options]="sortOptions" [ngModel]="sort()" (ngModelChange)="sort.set($event); emit()" aria-label="Ordenar tareas" class="filter-sort w-[145px] shrink-0" />
 </div>

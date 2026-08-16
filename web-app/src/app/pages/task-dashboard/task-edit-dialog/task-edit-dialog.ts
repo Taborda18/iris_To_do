@@ -4,6 +4,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import type { UpdateTaskRequestDto } from '../../../models/task/task.dto';
 import type { Task, TaskCategory, TaskPriority } from '../../../models/task/task.model';
+import { dateNotPastValidator } from '../task-form/task-form';
 
 @Component({
   selector: 'app-task-edit-dialog',
@@ -21,11 +22,12 @@ export class TaskEditDialogComponent {
   readonly saved = output<UpdateTaskRequestDto>();
   readonly categories: TaskCategory[] = ['FrontEnd', 'BackEnd', 'Docs'];
   readonly priorities: TaskPriority[] = ['Baja', 'Media', 'Urgente'];
+  readonly today = new Date(new Date().setHours(0, 0, 0, 0));
   readonly form = this.formBuilder.group({
     title: this.formBuilder.control('', [Validators.required, Validators.maxLength(200)]),
     category: this.formBuilder.control<TaskCategory>('FrontEnd', Validators.required),
     priority: this.formBuilder.control<TaskPriority>('Media', Validators.required),
-    dateLimit: this.formBuilder.control<Date | null>(null),
+    dateLimit: this.formBuilder.control<Date | null>(null, dateNotPastValidator),
   });
 
   private readonly syncForm = effect(() => {

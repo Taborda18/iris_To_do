@@ -5,11 +5,23 @@
 .edit-header h2 { margin: 5px 0 0; color: var(--ink); font-size: 23px; }
 .edit-close { width: 32px; height: 32px; border: 0; border-radius: 8px; background: #f1f6f5; color: var(--ink-soft); font-size: 22px; cursor: pointer; }
 .edit-form { display: grid; gap: 16px; padding: 24px; }
-.edit-field { display: grid; gap: 6px; }
-.edit-field label { color: var(--ink-soft); font-size: 12px; font-weight: 650; }
-.edit-field input { width: 100%; box-sizing: border-box; height: 42px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9px; outline: none; color: var(--ink); font: inherit; font-size: 13px; }
-.edit-field input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(32, 192, 172, .12); }
-.edit-field small { color: #c44738; font-size: 11px; }
+.edit-field { display: grid; gap: 0; }
+.form-label { display: block; margin-bottom: 5px; color: #28545a; font-size: 12px; font-weight: 700; }
+.form-input { display: block; width: 100%; min-width: 0; box-sizing: border-box; height: 50px; padding: 0 14px; border: 1px solid #d9e4e5; border-radius: 8px; outline: 0; background: #fff; color: #17383d; font: inherit; font-size: 14px; transition: border-color .2s ease, box-shadow .2s ease; }
+.form-input:focus { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; box-shadow: none; }
+.edit-field.invalid .form-input { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
+.edit-field.invalid .form-input:focus { border-color: #d9e4e5; border-bottom-color: #f15a28; box-shadow: none; }
+.form-error { display: block; margin-top: 5px; color: #f15a28; font-size: 12px; line-height: 1.2; }
+.edit-form ::ng-deep .edit-select.p-select { display: flex; width: 100%; height: 50px; align-items: center; overflow: hidden; border: 1px solid #d9e4e5; border-radius: 8px; background: #fff; }
+.edit-form ::ng-deep .edit-select.p-select:focus-within { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; }
+.edit-field.invalid ::ng-deep .edit-select.p-select { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
+.edit-form ::ng-deep .edit-select.p-select .p-select-label { min-width: 0; flex: 1 1 auto; overflow: hidden; padding: 0 11px; color: var(--ink-soft); text-overflow: ellipsis; white-space: nowrap; }
+.edit-form ::ng-deep .edit-select.p-select .p-select-dropdown { display: grid; width: 34px; height: 100%; flex: 0 0 34px; place-items: center; }
+.edit-form ::ng-deep .edit-select.p-select .p-select-dropdown-icon { display: block; width: 15px; height: 15px; color: #71848a; }
+.edit-form ::ng-deep .edit-date-picker.p-datepicker { display: flex; width: 100%; height: 50px; border: 1px solid #d9e4e5; border-radius: 8px; background: #fff; }
+.edit-form ::ng-deep .edit-date-picker.p-datepicker input { height: 100%; border: 0; background: #fff; color: #17383d; font-size: 14px; }
+.edit-form ::ng-deep .edit-date-picker.p-datepicker:focus-within { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; }
+.edit-field.invalid ::ng-deep .edit-date-picker.p-datepicker { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
 .edit-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .edit-select, .edit-date-picker { width: 100%; }
 .edit-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }

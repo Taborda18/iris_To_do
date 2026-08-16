@@ -13,6 +13,25 @@ import { TaskTrashDialogComponent } from './task-trash-dialog/task-trash-dialog'
 import { TaskEditDialogComponent } from './task-edit-dialog/task-edit-dialog';
 import type { UpdateTaskRequestDto } from '../../models/task/task.dto';
 
+const priorityOrder = { Urgente: 1, Media: 2, Baja: 3 } as const;
+
+const compareNullableDates = (first: string | null | undefined, second: string | null | undefined): number => {
+  if (!first && !second) return 0;
+  if (!first) return 1;
+  if (!second) return -1;
+  return first.localeCompare(second);
+};
+
+export const sortTasks = (tasks: readonly Task[], sort: TaskSort): Task[] => [...tasks].sort((first, second) => {
+  const byPriority = priorityOrder[first.priority] - priorityOrder[second.priority];
+  const byDateLimit = compareNullableDates(first.dateLimit, second.dateLimit);
+  const byCreatedAt = second.createdAt.localeCompare(first.createdAt);
+
+  if (sort === 'Prioridad') return byPriority || byDateLimit || byCreatedAt;
+  if (sort === 'Fecha límite') return byDateLimit || byPriority || byCreatedAt;
+  return byCreatedAt || byPriority || byDateLimit;
+});
+
 @Component({
   selector: 'app-task-dashboard',
   standalone: true,
@@ -42,13 +61,11 @@ export class TaskDashboard implements OnInit {
   readonly filteredTasks = computed(() => {
     const current = this.filters();
     const search = current.search.toLowerCase().trim();
-    const priorityOrder = { Urgente: 1, Media: 2, Baja: 3 } as const;
-    const dateValue = (date: string | null | undefined): number => date ? Date.parse(date) : Number.POSITIVE_INFINITY;
-    return this.tasks()
+    const matchingTasks = this.tasks()
       .filter((task) => current.category === 'All' || task.category === current.category)
       .filter((task) => current.status === 'Todos' || (current.status === 'Completadas' ? task.completed : !task.completed))
-      .filter((task) => task.title.toLowerCase().includes(search))
-      .sort((a, b) => current.sort === 'Prioridad' ? priorityOrder[a.priority] - priorityOrder[b.priority] : current.sort === 'Fecha límite' ? dateValue(a.dateLimit) - dateValue(b.dateLimit) || priorityOrder[a.priority] - priorityOrder[b.priority] : b.createdAt.localeCompare(a.createdAt));
+      .filter((task) => task.title.toLowerCase().includes(search));
+    return sortTasks(matchingTasks, current.sort);
   });
   readonly categories = computed(() => {
     const counts: Record<TaskCategory, number> = { FrontEnd: 0, BackEnd: 0, Docs: 0 };

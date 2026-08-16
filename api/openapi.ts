@@ -3,7 +3,7 @@ export const openApiDocument = {
   info: {
     title: 'IRIS To-Do API',
     version: '1.0.0',
-    description: 'Task management API built with Express, TypeScript, Prisma and MongoDB.',
+    description: 'API test iris-to_to_list',
   },
   servers: [{ url: 'http://localhost:3000/api', description: 'Local' }, { url: 'https://iris-to-do.onrender.com/api', description: 'Producción' }],
   components: {

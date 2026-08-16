@@ -1,5 +1,5 @@
 <form class="task-form" [formGroup]="form" (ngSubmit)="submit()">
-  <div class="form-field">
+  <div class="form-field" [class.invalid]="form.controls.title.touched && form.controls.title.invalid">
     <label class="form-label" for="task-title">Nombre de la tarea</label>
     <input class="form-input" id="task-title" formControlName="title" placeholder="Escribe el nombre de la tarea..." autocomplete="off" [attr.aria-invalid]="form.controls.title.invalid && form.controls.title.touched" />
     @if (form.controls.title.touched && form.controls.title.hasError('required')) {
@@ -10,17 +10,18 @@
   </div>
 
   <div class="form-options">
-    <div class="form-field">
+    <div class="form-field" [class.invalid]="form.controls.category.touched && form.controls.category.invalid">
       <label class="form-label" for="task-category">Categoría</label>
       <p-select inputId="task-category" [options]="categories" formControlName="category" aria-label="Categoría de la tarea" appendTo="body" panelStyleClass="task-select-panel" styleClass="task-select" />
     </div>
-    <div class="form-field">
+    <div class="form-field" [class.invalid]="form.controls.priority.touched && form.controls.priority.invalid">
       <label class="form-label" for="task-priority">Prioridad</label>
       <p-select inputId="task-priority" [options]="priorities" formControlName="priority" aria-label="Prioridad de la tarea" appendTo="body" panelStyleClass="task-select-panel" styleClass="task-select" />
     </div>
-    <div class="form-field">
+    <div class="form-field" [class.invalid]="form.controls.dateLimit.touched && form.controls.dateLimit.invalid">
       <label class="form-label" for="task-date-limit">Fecha límite</label>
-      <p-datepicker inputId="task-date-limit" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" placeholder="Selecciona una fecha" appendTo="body" styleClass="task-date-picker" />
+      <p-datepicker inputId="task-date-limit" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" [minDate]="today" placeholder="Selecciona una fecha" appendTo="body" styleClass="task-date-picker" />
+      @if (form.controls.dateLimit.touched && form.controls.dateLimit.hasError('pastDate')) { <small class="form-error">La fecha límite no puede ser anterior a hoy.</small> }
     </div>
   </div>
 

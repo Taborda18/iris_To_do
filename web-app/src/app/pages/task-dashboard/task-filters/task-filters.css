@@ -1,8 +1,12 @@
 .filter-tabs button { cursor: pointer; }
 .filter-tabs button:hover { background: var(--mint-soft); color: var(--mint-dark); }
 .filter-tabs button[aria-selected='true'] { cursor: default; }
+.filter-row { display: contents; }
 
 @media (max-width: 700px) {
-  .filter-tabs { order: 3; flex-basis: 100%; }
-  .filter-sort { order: 4; flex-basis: 100%; width: min(300px, 100%); }
+  .task-filters { margin-top: 12px; }
+  .filter-row { display: flex; width: 100%; order: 1; gap: 8px; }
+  .filter-row .filter-status,
+  .filter-row .filter-sort { width: 0 !important; min-width: 0; flex: 1 1 0; }
+  .filter-tabs { order: 2; flex-basis: 100%; min-width: 0; width: 100%; }
 }

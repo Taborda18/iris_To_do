@@ -70,4 +70,17 @@ describe('TaskEditDialogComponent', () => {
     expect((fixture.nativeElement.querySelector('#edit-task-name') as HTMLInputElement).value).toBe('Create API');
     expect(fixture.nativeElement.textContent).toContain('Fecha límite');
   });
+
+  it('rejects a deadline before today', () => {
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+    const saved = vi.fn();
+    component.saved.subscribe(saved);
+    component.form.patchValue({ title: 'Task', dateLimit: new Date('2000-01-01T12:00:00') });
+
+    component.submit();
+
+    expect(component.form.controls.dateLimit.hasError('pastDate')).toBe(true);
+    expect(saved).not.toHaveBeenCalled();
+  });
 });

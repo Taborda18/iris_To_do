@@ -1,15 +1,23 @@
 .task-form { display: grid; gap: 10px; }
 .form-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .form-field { min-width: 0; }
-.form-label { display: block; margin-bottom: 5px; color: var(--ink); font-size: 12px; font-weight: 600; }
+.form-label { display: block; margin-bottom: 5px; color: #28545a; font-size: 12px; font-weight: 700; }
 .form-input { display: block; width: 100%; min-width: 0; }
-.task-form ::ng-deep .task-select.p-select { display: flex; width: 100%; height: 40px; align-items: center; overflow: hidden; }
+.task-form ::ng-deep .task-select.p-select { display: flex; width: 100%; height: 50px; align-items: center; overflow: hidden; border: 1px solid #d9e4e5; border-radius: 8px; background: #fff; }
+.task-form ::ng-deep .task-select.p-select:focus-within { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; }
+.task-form .invalid ::ng-deep .task-select.p-select { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
 .task-form ::ng-deep .task-select.p-select .p-select-label { min-width: 0; flex: 1 1 auto; overflow: hidden; padding: 0 11px; text-overflow: ellipsis; white-space: nowrap; }
 .task-form ::ng-deep .task-select.p-select .p-select-dropdown { display: grid; width: 34px; height: 100%; flex: 0 0 34px; place-items: center; }
 .task-form ::ng-deep .task-select.p-select .p-select-dropdown-icon { display: block; width: 15px; height: 15px; color: #71848a; }
-.form-input { height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--ink-soft); outline: 0; font-size: 13px; transition: border-color .2s ease, box-shadow .2s ease; }
-.form-input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(25, 187, 167, .1); }
-.form-error { display: block; margin-top: 5px; color: #b42318; font-size: 11px; }
+.task-form ::ng-deep .task-date-picker.p-datepicker { display: flex; width: 100%; height: 50px; border: 1px solid #d9e4e5; border-radius: 8px; background: #fff; }
+.task-form ::ng-deep .task-date-picker.p-datepicker input { height: 100%; border: 0; background: #fff; color: #17383d; font-size: 14px; }
+.task-form ::ng-deep .task-date-picker.p-datepicker:focus-within { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; }
+.task-form .invalid ::ng-deep .task-date-picker.p-datepicker { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
+.form-input { height: 50px; padding: 0 14px; border: 1px solid #d9e4e5; border-radius: 8px; outline: 0; background: #fff; color: #17383d; font-size: 14px; transition: border-color .2s ease, box-shadow .2s ease; }
+.form-input:focus { border-color: #d9e4e5; border-bottom: 3px solid #00d5c3; box-shadow: none; }
+.form-field.invalid .form-input { border-color: #d9e4e5; border-bottom: 3px solid #f15a28; }
+.form-field.invalid .form-input:focus { border-color: #d9e4e5; border-bottom-color: #f15a28; box-shadow: none; }
+.form-error { display: block; margin-top: 5px; color: #f15a28; font-size: 12px; line-height: 1.2; }
 .form-submit { width: 100%; height: 40px; margin-top: 2px; border: 0; border-radius: 10px; background: linear-gradient(90deg, #23c7b5, #00a999); color: white; font-size: 13px; font-weight: 700; cursor: pointer; transition: filter .2s ease, opacity .2s ease; }
 .form-submit:hover:not(:disabled) { filter: brightness(.96); }
 .form-submit:disabled { cursor: not-allowed; opacity: .45; }

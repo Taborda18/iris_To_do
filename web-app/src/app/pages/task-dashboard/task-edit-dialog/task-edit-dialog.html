@@ -10,27 +10,28 @@
     </header>
 
     <form class="edit-form" [formGroup]="form" (ngSubmit)="submit()">
-      <div class="edit-field">
-        <label for="edit-task-name">Nombre de la tarea</label>
-        <input id="edit-task-name" formControlName="title" [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid" />
-        @if (form.controls.title.touched && form.controls.title.hasError('required')) { <small>El nombre es obligatorio.</small> }
-        @if (form.controls.title.touched && form.controls.title.hasError('maxlength')) { <small>Usa máximo 200 caracteres.</small> }
+      <div class="edit-field" [class.invalid]="form.controls.title.touched && form.controls.title.invalid">
+        <label class="form-label" for="edit-task-name">Nombre de la tarea</label>
+        <input class="form-input" id="edit-task-name" formControlName="title" placeholder="Escribe el nombre de la tarea..." [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid" />
+        @if (form.controls.title.touched && form.controls.title.hasError('required')) { <small class="form-error">El nombre es obligatorio.</small> }
+        @if (form.controls.title.touched && form.controls.title.hasError('maxlength')) { <small class="form-error">Usa máximo 200 caracteres.</small> }
       </div>
 
       <div class="edit-options">
-        <div class="edit-field">
-          <label for="edit-task-category">Categoría</label>
-          <p-select inputId="edit-task-category" [options]="categories" formControlName="category" appendTo="body" styleClass="edit-select" />
+        <div class="edit-field" [class.invalid]="form.controls.category.touched && form.controls.category.invalid">
+          <label class="form-label" for="edit-task-category">Categoría</label>
+          <p-select inputId="edit-task-category" [options]="categories" formControlName="category" aria-label="Categoría de la tarea" appendTo="body" panelStyleClass="task-select-panel" styleClass="edit-select" />
         </div>
-        <div class="edit-field">
-          <label for="edit-task-priority">Prioridad</label>
-          <p-select inputId="edit-task-priority" [options]="priorities" formControlName="priority" appendTo="body" styleClass="edit-select" />
+        <div class="edit-field" [class.invalid]="form.controls.priority.touched && form.controls.priority.invalid">
+          <label class="form-label" for="edit-task-priority">Prioridad</label>
+          <p-select inputId="edit-task-priority" [options]="priorities" formControlName="priority" aria-label="Prioridad de la tarea" appendTo="body" panelStyleClass="task-select-panel" styleClass="edit-select" />
         </div>
       </div>
 
-      <div class="edit-field">
-        <label for="edit-task-date">Fecha límite</label>
-        <p-datepicker inputId="edit-task-date" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" placeholder="Selecciona una fecha" appendTo="body" styleClass="edit-date-picker" />
+      <div class="edit-field" [class.invalid]="form.controls.dateLimit.touched && form.controls.dateLimit.invalid">
+        <label class="form-label" for="edit-task-date">Fecha límite</label>
+        <p-datepicker inputId="edit-task-date" formControlName="dateLimit" dateFormat="dd/mm/yy" [showIcon]="true" [minDate]="today" placeholder="Selecciona una fecha" appendTo="body" styleClass="edit-date-picker" />
+        @if (form.controls.dateLimit.touched && form.controls.dateLimit.hasError('pastDate')) { <small class="form-error">La fecha límite no puede ser anterior a hoy.</small> }
       </div>
 
       <footer class="edit-actions">
