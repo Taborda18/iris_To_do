@@ -6,10 +6,10 @@
         <span>{{ item.label }}</span>
       </a>
     } @else {
-      <span class="nav-item nav-item-disabled" aria-disabled="true">
+      <button class="nav-item nav-item-disabled" type="button" aria-disabled="true" [attr.title]="item.label + ': En construcción'" [attr.data-tooltip]="item.label + ': En construcción'" (click)="showUnavailable(item.label)">
         <app-icon [name]="item.icon" />
         <span>{{ item.label }}</span>
-      </span>
+      </button>
     }
   }
 </nav>

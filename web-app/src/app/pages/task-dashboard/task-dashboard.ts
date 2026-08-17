@@ -9,6 +9,7 @@ import { TaskMetricsComponent } from './task-metrics/task-metrics';
 import { IconComponent } from '../../shared/components/icon/icon';
 import { NavbarComponent } from '../../shared/components/navbar/navbar';
 import { AuthService } from '../../services/auth/auth.service';
+import { AlertService } from '../../shared/services/alert.service';
 import { TaskTrashDialogComponent } from './task-trash-dialog/task-trash-dialog';
 import { TaskEditDialogComponent } from './task-edit-dialog/task-edit-dialog';
 import type { UpdateTaskRequestDto } from '../../models/task/task.dto';
@@ -44,6 +45,7 @@ export class TaskDashboard implements OnInit {
   readonly taskService = inject(TaskService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly alertService = inject(AlertService);
   readonly isFormOpen = signal(false);
   readonly isUserMenuOpen = signal(false);
   readonly isTrashOpen = signal(false);
@@ -103,4 +105,5 @@ export class TaskDashboard implements OnInit {
   setStatus(status: TaskStatus): void { this.updateFilters({ ...this.filters(), status }); }
   setCategory(category: TaskCategory | 'All'): void { this.updateFilters({ ...this.filters(), category }); }
   setSort(sort: TaskSort): void { this.updateFilters({ ...this.filters(), sort }); }
+  showUnderConstruction(label: string): void { this.alertService.warning('Esta sección está en construcción.', label); }
 }

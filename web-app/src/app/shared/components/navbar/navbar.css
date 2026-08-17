@@ -2,5 +2,7 @@
 .sidebar-navigation { display: grid; }
 .nav-item { display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 18px; margin-bottom: 5px; border-radius: 12px; color: #526970; font-size: 14px; text-decoration: none; }
 .nav-item.active, .nav-item:not(.nav-item-disabled):hover { background: var(--mint-soft); color: var(--mint-dark); font-weight: 600; }
-.nav-item-disabled { color: #9aa8ac; cursor: default; opacity: .65; pointer-events: none; user-select: none; }
+.nav-item-disabled { position: relative; border: 0; background: transparent; color: #9aa8ac; cursor: pointer; opacity: .65; user-select: none; text-align: left; }
 .nav-item-disabled:hover { background: transparent; color: #9aa8ac; font-weight: 400; }
+.nav-item-disabled::after { position: absolute; bottom: calc(100% + 6px); left: 18px; z-index: 5; padding: 6px 9px; border-radius: 6px; background: #17383d; color: #fff; content: attr(data-tooltip); font-size: 11px; font-weight: 500; opacity: 0; pointer-events: none; transform: translateY(3px); transition: opacity .15s ease, transform .15s ease; white-space: nowrap; }
+.nav-item-disabled:hover::after, .nav-item-disabled:focus-visible::after { opacity: 1; transform: translateY(0); }

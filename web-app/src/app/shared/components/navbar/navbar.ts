@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IconComponent } from '../icon/icon';
 import { navbarItems } from './navbar.config';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,5 +13,10 @@ import { navbarItems } from './navbar.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
+  private readonly alertService = inject(AlertService);
   readonly items = navbarItems;
+
+  showUnavailable(label: string): void {
+    this.alertService.warning('Esta sección está en construcción.', label);
+  }
 }

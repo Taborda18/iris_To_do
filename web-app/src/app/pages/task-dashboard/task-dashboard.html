@@ -99,8 +99,8 @@
 
   <nav class="mobile-bottom-nav" aria-label="Navegación móvil">
     <a class="active" href="/tasks"><app-icon name="grid" /><span>Panel</span></a>
-    <span class="mobile-nav-disabled" aria-disabled="true"><app-icon name="calendar" /><span>Calendario</span></span>
-    <span class="mobile-nav-disabled" aria-disabled="true"><app-icon name="chart" /><span>Reportes</span></span>
+    <button class="mobile-nav-disabled" type="button" aria-disabled="true" title="Calendario: En construcción" (click)="showUnderConstruction('Calendario')"><app-icon name="calendar" /><span>Calendario</span></button>
+    <button class="mobile-nav-disabled" type="button" aria-disabled="true" title="Reportes: En construcción" (click)="showUnderConstruction('Reportes')"><app-icon name="chart" /><span>Reportes</span></button>
     <button
       class="mobile-user-nav"
       type="button"
